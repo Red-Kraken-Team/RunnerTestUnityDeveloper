@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 public class Upgrades : MonoBehaviour
 {
-    [SerializeField] private PickupsConfig _pickupsConfig;
+    private PickupsConfig _pickupsConfig;
     private UpgradesStatsConfig UpgradeConfig => _pickupsConfig.UpgradeConfig;
 
     private PlayerPickups _playerPickups;
@@ -11,16 +11,18 @@ public class Upgrades : MonoBehaviour
 
 
     public UnityEvent FailedUpgrades = new UnityEvent();
-    public UnityEvent LevelChange = new UnityEvent();
+    public UnityEvent LevelChangeUp = new UnityEvent();
+    public UnityEvent LevelChangeDown = new UnityEvent();
 
     public int CurrentUpgrade { get; private set; }
     private int NextUpgrade => CurrentUpgrade * UpgradeConfig.UpgradeStep;
     private int PreviousUpgrade => NextUpgrade - UpgradeConfig.UpgradeStep;
 
     #region PUBLIC
-    public void Initialize()
+    public void Initialize(PickupsConfig pickupsConfig)
     {
-        _playerPickups = new PlayerPickups(_pickupsConfig);
+        _pickupsConfig = pickupsConfig;
+        _playerPickups = new PlayerPickups(pickupsConfig);
         AddPickupNotified();
 
         CurrentUpgrade = 1;
@@ -70,18 +72,18 @@ public class Upgrades : MonoBehaviour
 
     private void LevelUp()
     {
-        Debug.Log("Level Up " + CurrentLevel + " " + NextUpgrade);
+        Debug.Log("Level Up");
         CurrentUpgrade++;
 
-        LevelChange?.Invoke();
+        LevelChangeUp?.Invoke();
     }
 
     private void LevelDown()
     {
-        Debug.Log("Level Down " + CurrentLevel + " " + PreviousUpgrade);
+        Debug.Log("Level Down");
         CurrentUpgrade--;
 
-        LevelChange?.Invoke();
+        LevelChangeDown?.Invoke();
     }
 
     

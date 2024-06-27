@@ -21,7 +21,7 @@ public abstract class MovementState : IState
         _characterConfig = character.CharacterConfig;
     }
 
-    protected bool IsDirectionZero() => Data.MoveDirection == Vector2.zero;
+    protected bool IsDirectionZero() => Data.MoveDirection.y == 0;
 
     public virtual void Enter()
     {

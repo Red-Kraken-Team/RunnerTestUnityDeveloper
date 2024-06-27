@@ -14,7 +14,8 @@ public class ChangeUpgrade : MonoBehaviour
 	public void Initialize(Upgrades upgrades)
     {
         _upgrades = upgrades;
-        _upgrades.LevelChange.AddListener(LevelChange);
+        _upgrades.LevelChangeUp.AddListener(LevelChange);
+        _upgrades.LevelChangeDown.AddListener(LevelChange);
 
         _animator = GetComponent<Animator>();
     }
@@ -25,7 +26,8 @@ public class ChangeUpgrade : MonoBehaviour
     #region PRIVATE
     private void OnDestroy()
     {
-        _upgrades.LevelChange.RemoveListener(LevelChange);
+        _upgrades.LevelChangeUp.RemoveListener(LevelChange);
+        _upgrades.LevelChangeDown.RemoveListener(LevelChange);
     }
 
     private void LevelChange()

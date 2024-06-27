@@ -4,14 +4,14 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] private CharacterConfig _characterConfig;
-
-    public CharacterController CharacterController { get; private set; }
-
     public CharacterConfig CharacterConfig => _characterConfig;
 
+    public CharacterController CharacterController { get; private set; }
     public CharacterStateMachine StateMachine { get; private set; }
+    public StateMachineData StateMachineData => StateMachine.StateMachineData;
 
-    private bool _isMove;
+    public bool IsMove { get; private set; }
+
 
     #region PUBLIC
     public void Initialize()
@@ -22,24 +22,29 @@ public class Character : MonoBehaviour
 
     public void MoveStart()
     {
-        if (_isMove == false)
-            _isMove = true;
+        if (IsMove == false)
+        {
+            StateMachineData.SetMoveY(1);
+            IsMove = true;
+        }
     }
 
     public void MoveStop()
     {
-        if (_isMove)
-            _isMove = false;
+        if (IsMove)
+        {
+            StateMachineData.SetMoveY(0);
+            IsMove = false;
+        }
     }
-
+    
     #endregion
 
     #region PRIVATE
 
     private void Update()
     {
-        if(_isMove)
-            StateMachine.Update();
+        StateMachine.Update();
     }
     #endregion
 }
